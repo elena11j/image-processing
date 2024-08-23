@@ -138,7 +138,7 @@ def setupExcel(filename, dataframe):
     
     worksheet.set_column(first_col=0, last_col=0, width=15.6, cell_format=cell_format1)   # Index
     worksheet.set_column(first_col=1, last_col=1, width=9, cell_format=cell_format1)      # Filename
-    worksheet.set_column(first_col=2, last_col=2, width=57, cell_format=cell_format1)     # Image 
+    worksheet.set_column(first_col=2, last_col=2, width=73, cell_format=cell_format1)     # Image 
     worksheet.set_column(first_col=3, last_col=3, width=30, cell_format=cell_format1)     # Raw
     worksheet.set_column(first_col=4, last_col=4, width=10, cell_format=cell_format1)     # Serial
     worksheet.set_column(first_col=5, last_col=6, width=15.6, cell_format=cell_format1)   # Brand
@@ -147,7 +147,7 @@ def setupExcel(filename, dataframe):
     worksheet.set_column(first_col=11, last_col=11, width=20, cell_format=cell_format3)   # Engineer Name
 
     # Insert Button
-    worksheet.insert_button('M2', {'caption':'Rename Files', 'width': 80, 'height': 30})
+    worksheet.insert_button('M2', {'macro':'rename_files','caption':'Rename Files', 'width': 80, 'height': 30})
     worksheet.set_column(first_col=12, last_col=12, width=15)    # Button width
     
     # Hide raw OCR results by default
@@ -155,11 +155,11 @@ def setupExcel(filename, dataframe):
     worksheet.set_column(3,3,options={'hidden': 1})
 
     # Insert formula that will suggest new file name
-    for row_num in range(2, 100):
+    for row_num in range(2, 1000):
         worksheet.write_dynamic_array_formula("H%s:H%s" % (row_num, row_num), formula='=_xlfn.CONCAT(F%s," ",G%s," ",E%s," ","Nameplate")' % (row_num, row_num, row_num))
 
     # Insert formula that will suggest new file name
-    for row_num in range(2, 100):
+    for row_num in range(2, 1000):
         worksheet.write_dynamic_array_formula("L%s:L%s" % (row_num, row_num), formula='_xlfn.CONCAT(IF(J%s="",F%s,J%s)," ",IF(K%s="",G%s,K%s)," ",IF(I%s="",E%s,I%s)," ", "Nameplate.jpg")' % (row_num, row_num, row_num, row_num, row_num, row_num, row_num, row_num, row_num))
 
     return writer, workbook, worksheet
@@ -189,7 +189,7 @@ def iterateImages(sitedir, filenames, filepaths, excelfile, dataframe):
         cv2.imwrite("temp\\"+ "processed_" +filenames[filepaths.index(paths)], processed)
 
         # Insert the processed image
-        worksheet.set_row(row=filepaths.index(paths)+1, height=200)                                             
+        worksheet.set_row(row=filepaths.index(paths)+1, height=250)                                             
         worksheet.embed_image(filepaths.index(paths)+1, 2, "temp\\"+ "processed_" +filenames[filepaths.index(paths)])
 
         # OCR
@@ -216,10 +216,10 @@ def iterateImages(sitedir, filenames, filepaths, excelfile, dataframe):
 
             # RDC Brands
             if "ARN" in word:
-                worksheet.write(filepaths.index(paths)+1, 5, "ARNEG")
+                worksheet.write(filepaths.index(paths)+1, 5, "Arneg")
 
             if "HU" in word:
-                worksheet.write(filepaths.index(paths)+1, 5, "HUSSMANN")
+                worksheet.write(filepaths.index(paths)+1, 5, "Hussmann")
             
             # Model Number Test
             if "KG" in word:
@@ -239,7 +239,7 @@ def iterateImages(sitedir, filenames, filepaths, excelfile, dataframe):
                 worksheet.write(filepaths.index(paths)+1, 6, result)
 
     workbook.filename = 'output.xlsm'
-    workbook.add_vba_project('fileRenamer.bas')
+    workbook.add_vba_project('vbaProject.bin')
 
     # Close the Pandas Excel writer and output the Excel file.
     writer.close()
