@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt         # Displaying images and plots during deb
 import numpy as np                      # Handling arrays
 
 # Tesseract Setup
-pytesseract.pytesseract.tesseract_cmd = r'C:\Users\Elena.Justo\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
+pytesseract.pytesseract.tesseract_cmd = r"_internal\Tesseract-OCR\tesseract.exe"
 
 # Function:    processImage
 #    Input:    Path to image to process.
@@ -238,8 +238,8 @@ def iterateImages(sitedir, filenames, filepaths, excelfile, dataframe):
                 result = word[word.index("KM"):]
                 worksheet.write(filepaths.index(paths)+1, 6, result)
 
-    workbook.filename = 'output.xlsm'
-    workbook.add_vba_project('vbaProject.bin')
+    workbook.filename = sitedir + '/output.xlsm'
+    workbook.add_vba_project('_internal/vbaProject.bin')
 
     # Close the Pandas Excel writer and output the Excel file.
     writer.close()
@@ -247,9 +247,16 @@ def iterateImages(sitedir, filenames, filepaths, excelfile, dataframe):
     # Remove xlsx file
     os.remove(excelfile)
 
-# Current directory
-dir_path = os.path.dirname(os.path.realpath(__file__))
+# Get target directory
+dir_path = input("Paste the directory with the RDC photos: ")
+dir_path = dir_path.replace('"','')
 
 # Execute program
 df, names, paths = setupDataframe(dir_path)
 iterateImages(dir_path, names, paths, "output.xlsx", df)
+
+# Let user know it is done
+print("Program has finished running.")
+
+# Let user read
+input("Press Enter to Exit Program")

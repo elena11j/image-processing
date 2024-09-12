@@ -4,3 +4,7 @@
 *.xlsx
 /results
 /test
+/_internal
+/Tesseract-OCR
+/output
+/vba
