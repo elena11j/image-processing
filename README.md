@@ -8,13 +8,23 @@ Tool makes use of OCR to help with identifying equipment brand name, serial numb
 
 ## Breakdown of Project
 
+**test.py:** 
+
+Script that is converted into an exe and does all the processing and excel output.
+
+***.ipynb:**
+
+For experimenting and testing.
 
 ## Examples
 
+**The output excel file generation by test.py:**
+
+![1728000380785](image/README/1728000380785.png)
 
 ## To Do
 
-* [ ] 
+* [ ]
 
 ## Required Libraries
 
